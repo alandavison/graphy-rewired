@@ -12,3 +12,6 @@
 !/Assets/
 /Assets/*
 !/Assets/Tayx/
+
+# Ignore assets I don't own the copyright to
+Assets/Rewired/*
