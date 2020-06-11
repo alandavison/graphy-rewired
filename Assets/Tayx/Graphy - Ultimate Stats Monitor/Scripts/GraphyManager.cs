@@ -16,6 +16,7 @@ using Tayx.Graphy.Fps;
 using Tayx.Graphy.Ram;
 using Tayx.Graphy.Utils;
 using Tayx.Graphy.Advanced;
+using Rewired;
 
 namespace Tayx.Graphy
 {
@@ -28,6 +29,9 @@ namespace Tayx.Graphy
          * --------------------------------------*/
 
         protected GraphyManager () { }
+
+        //Required Rewired stuff
+        private Player _player;
 
         //Enums
         #region Enums -> Public
@@ -105,13 +109,9 @@ namespace Tayx.Graphy
 
         [SerializeField] private    bool                    m_enableHotkeys                     = true;
 
-        [SerializeField] private    KeyCode                 m_toggleModeKeyCode                 = KeyCode.G;
-        [SerializeField] private    bool                    m_toggleModeCtrl                    = true;
-        [SerializeField] private    bool                    m_toggleModeAlt                     = false;
-
-        [SerializeField] private    KeyCode                 m_toggleActiveKeyCode               = KeyCode.H;
-        [SerializeField] private    bool                    m_toggleActiveCtrl                  = true;
-        [SerializeField] private    bool                    m_toggleActiveAlt                   = false;
+        [SerializeField] private    string                  m_toggleRewiredAction               = "Graphy Toggle";
+        [SerializeField] private    string                  m_toggleModeRewiredAction           = "Graphy Mode Toggle";
+        [SerializeField] private    string                  m_rewiredPlayerName                 = "";
         
         [SerializeField] private    ModulePosition          m_graphModulePosition               = ModulePosition.TOP_RIGHT;
         
@@ -576,6 +576,8 @@ namespace Tayx.Graphy
 
         private void Init()
         {
+            _player = ReInput.players.GetPlayer(m_rewiredPlayerName);
+
             if (m_keepAlive)
             {
                 DontDestroyOnLoad(transform.root.gameObject);
@@ -614,95 +616,12 @@ namespace Tayx.Graphy
         private void CheckForHotkeyPresses()
         {
             // Toggle Mode ---------------------------------------
+            if (_player.GetButtonDown(m_toggleModeRewiredAction))
+                ToggleModes();
 
-            if (m_toggleModeCtrl && m_toggleModeAlt)
-            {
-                if (CheckFor3KeyPress(m_toggleModeKeyCode, KeyCode.LeftControl, KeyCode.LeftAlt)
-                    || CheckFor3KeyPress(m_toggleModeKeyCode, KeyCode.RightControl, KeyCode.LeftAlt)
-                    || CheckFor3KeyPress(m_toggleModeKeyCode, KeyCode.RightControl, KeyCode.RightAlt)
-                    || CheckFor3KeyPress(m_toggleModeKeyCode, KeyCode.LeftControl, KeyCode.RightAlt))
-                {
-                    ToggleModes();
-                }
-            }
-            else if (m_toggleModeCtrl)
-            {
-                if (    CheckFor2KeyPress(m_toggleModeKeyCode, KeyCode.LeftControl)
-                    ||  CheckFor2KeyPress(m_toggleModeKeyCode, KeyCode.RightControl))
-                {
-                    ToggleModes();
-                }
-            }
-            else if (m_toggleModeAlt)
-            {
-                if (    CheckFor2KeyPress(m_toggleModeKeyCode, KeyCode.LeftAlt)
-                    ||  CheckFor2KeyPress(m_toggleModeKeyCode, KeyCode.RightAlt))
-                {
-                    ToggleModes();
-                }
-            }
-            else
-            {
-                if (CheckFor1KeyPress(m_toggleModeKeyCode))
-                {
-                    ToggleModes();
-                }
-            }
-
-            // Toggle Active ---------------------------------------
-
-            if (m_toggleActiveCtrl && m_toggleActiveAlt)
-            {
-                if (    CheckFor3KeyPress(m_toggleActiveKeyCode, KeyCode.LeftControl, KeyCode.LeftAlt)
-                    ||  CheckFor3KeyPress(m_toggleActiveKeyCode, KeyCode.RightControl, KeyCode.LeftAlt)
-                    ||  CheckFor3KeyPress(m_toggleActiveKeyCode, KeyCode.RightControl, KeyCode.RightAlt)
-                    ||  CheckFor3KeyPress(m_toggleActiveKeyCode, KeyCode.LeftControl, KeyCode.RightAlt))
-                {
-                    ToggleActive();
-                }
-            }
-            
-            else if (m_toggleActiveCtrl)
-            {
-                if (    CheckFor2KeyPress(m_toggleActiveKeyCode, KeyCode.LeftControl)
-                    ||  CheckFor2KeyPress(m_toggleActiveKeyCode, KeyCode.RightControl))
-                {
-                    ToggleActive();
-                }
-            }
-            else if (m_toggleActiveAlt)
-            {
-                if (    CheckFor2KeyPress(m_toggleActiveKeyCode, KeyCode.LeftAlt)
-                    ||  CheckFor2KeyPress(m_toggleActiveKeyCode, KeyCode.RightAlt))
-                {
-                    ToggleActive();
-                }
-            }
-            else
-            {
-                if (CheckFor1KeyPress(m_toggleActiveKeyCode))
-                {
-                    ToggleActive();
-                }
-            }
-        }
-
-        private bool CheckFor1KeyPress(KeyCode key)
-        {
-            return Input.GetKeyDown(key);
-        }
-
-        private bool CheckFor2KeyPress(KeyCode key1, KeyCode key2)
-        {
-            return Input.GetKeyDown(key1) && Input.GetKey(key2)
-                || Input.GetKeyDown(key2) && Input.GetKey(key1);
-        }
-
-        private bool CheckFor3KeyPress(KeyCode key1, KeyCode key2, KeyCode key3)
-        {
-            return Input.GetKeyDown(key1) && Input.GetKey(key2) && Input.GetKey(key3)
-                || Input.GetKeyDown(key2) && Input.GetKey(key1) && Input.GetKey(key3)
-                || Input.GetKeyDown(key3) && Input.GetKey(key1) && Input.GetKey(key2);
+                // Toggle Active ---------------------------------------
+            if (_player.GetButtonDown(m_toggleRewiredAction))
+                ToggleActive();
         }
 
         private void UpdateAllParameters()

@@ -13,6 +13,7 @@ using System;
 using UnityEngine;
 using System.IO;
 using UnityEditor;
+using System.Xml.Schema;
 
 namespace Tayx.Graphy
 {
@@ -52,14 +53,9 @@ namespace Tayx.Graphy
 
         private SerializedProperty m_enableHotkeys;
 
-        private SerializedProperty m_toggleModeKeyCode;
-        private SerializedProperty m_toggleModeCtrl;
-        private SerializedProperty m_toggleModeAlt;
-
-        private SerializedProperty m_toggleActiveKeyCode;
-        private SerializedProperty m_toggleActiveCtrl;
-        private SerializedProperty m_toggleActiveAlt;
-
+        private SerializedProperty m_toggleModeRewiredAction;
+        private SerializedProperty m_toggleRewiredAction;
+        private SerializedProperty m_rewiredPlayerName;
 
         private SerializedProperty m_graphModulePosition;
 
@@ -158,15 +154,9 @@ namespace Tayx.Graphy
 
             m_enableHotkeys = serObj.FindProperty("m_enableHotkeys");
 
-            m_toggleModeKeyCode = serObj.FindProperty("m_toggleModeKeyCode");
-
-            m_toggleModeCtrl = serObj.FindProperty("m_toggleModeCtrl");
-            m_toggleModeAlt = serObj.FindProperty("m_toggleModeAlt");
-
-            m_toggleActiveKeyCode = serObj.FindProperty("m_toggleActiveKeyCode");
-
-            m_toggleActiveCtrl = serObj.FindProperty("m_toggleActiveCtrl");
-            m_toggleActiveAlt = serObj.FindProperty("m_toggleActiveAlt");
+            m_toggleModeRewiredAction = serObj.FindProperty("m_toggleModeRewiredAction");
+            m_toggleRewiredAction = serObj.FindProperty("m_toggleRewiredAction");
+            m_rewiredPlayerName = serObj.FindProperty("m_rewiredPlayerName");
 
             m_graphModulePosition = serObj.FindProperty("m_graphModulePosition");
 
@@ -358,85 +348,34 @@ namespace Tayx.Graphy
 
             if (m_enableHotkeys.boolValue)
             {
-                EditorGUILayout.BeginHorizontal();
-
-                EditorGUIUtility.labelWidth = 130;
-                EditorGUIUtility.fieldWidth = 35;
+                EditorGUILayout.PropertyField
+            (
+                m_toggleRewiredAction,
+                new GUIContent
+                (
+                    text: "Toggle Graphy on/off",
+                    tooltip: "Toggle Graphy on/off."
+                )
+            );
 
                 EditorGUILayout.PropertyField
-                (
-                    m_toggleModeKeyCode,
-                    new GUIContent
-                    (
-                        text: "Toggle Mode Key",
-                        tooltip: "If ticked, it will require clicking this key and the other ones you have set up."
-                    )
-                );
-
-                EditorGUIUtility.labelWidth = 30;
-                EditorGUIUtility.fieldWidth = 35;
-
-                m_toggleModeCtrl.boolValue = EditorGUILayout.Toggle
-                (
-                    new GUIContent
-                    (
-                        text: "Ctrl",
-                        tooltip: "If ticked, it will require clicking Ctrl and the other keys you have set up."
-                    ),
-                    value: m_toggleModeCtrl.boolValue
-                );
-
-                m_toggleModeAlt.boolValue = EditorGUILayout.Toggle
-                (
-                    new GUIContent
-                    (
-                        text: "Alt",
-                        tooltip: "If ticked, it will require clicking Alt and the other keys you have set up."
-                    ),
-                    value: m_toggleModeAlt.boolValue
-                );
-
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.BeginHorizontal();
-
-                EditorGUIUtility.labelWidth = 130;
-                EditorGUIUtility.fieldWidth = 35;
-
+           (
+               m_toggleModeRewiredAction,
+               new GUIContent
+               (
+                   text: "Toggle between Graphy's modes",
+                   tooltip: "Toggle between Graphy's modes."
+               )
+           );
                 EditorGUILayout.PropertyField
-                (
-                    m_toggleActiveKeyCode,
-                    new GUIContent
-                    (
-                        text: "Toggle Active Key",
-                        tooltip: "If ticked, it will require clicking this key and the other ones you have set up."
-                    )
-                );
-
-                EditorGUIUtility.labelWidth = 30;
-                EditorGUIUtility.fieldWidth = 35;
-
-                m_toggleActiveCtrl.boolValue = EditorGUILayout.Toggle
-                (
-                    new GUIContent
-                    (
-                        text: "Ctrl",
-                        tooltip: "If ticked, it will require clicking Ctrl and the other kesy you have set up."
-                    ),
-                    value: m_toggleActiveCtrl.boolValue
-                );
-
-                m_toggleActiveAlt.boolValue = EditorGUILayout.Toggle
-                (
-                    new GUIContent
-                    (
-                        text: "Alt",
-                        tooltip: "If ticked, it will require clicking Alt and the other keys you have set up."
-                    ),
-                    value: m_toggleActiveAlt.boolValue
-                );
-
-                EditorGUILayout.EndHorizontal();
+           (
+               m_rewiredPlayerName,
+               new GUIContent
+               (
+                   text: "Rewired Player",
+                   tooltip: "The Player name we'll be accessing from Rewired."
+               )
+           );
             }
 
             GUILayout.Space(15);
