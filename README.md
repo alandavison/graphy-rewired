@@ -1,6 +1,10 @@
 # If you're looking for the official Graphy repo, go here: https://github.com/Tayx94/graphy  
 **This is a simple modification enabling the use of [Rewired](https://assetstore.unity.com/packages/tools/utilities/rewired-21676) input actions instead of Unity's input system.**
 
+Following content is from the official Graphy README.md, and does not in any way refer to this fork.
+
+***
+
 **Links:** [Discord](https://discord.gg/2KgNEHK?) | [Mail](martintayx@gmail.com) | [Twitter](https://twitter.com/martinTayx) | [Asset store](https://assetstore.unity.com/packages/tools/gui/graphy-ultimate-stats-monitor-debugger-105778) | [Forum post](https://forum.unity.com/threads/graphy-ultimate-stats-monitor-debugger-released.517387/) | [Donations](https://www.paypal.me/MartinPaneUK)
 
 **WINNER** of the **BEST DEVELOPMENT ASSET** in the **Unity Awards 2018**.
